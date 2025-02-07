@@ -10,7 +10,7 @@ app.use(cors());
 const REPLICATE_API_TOKEN = process.env.REPLICATE_API_TOKEN;
 
 // ✅ `/generate` のルートを正しく設定
-app.post("/generate", async (req, res) => {
+app.get("/generate", async (req, res) => {
     const { prompt } = req.body;
 
     if (!prompt) {
