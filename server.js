@@ -9,7 +9,7 @@ app.use(cors());
 
 const REPLICATE_API_TOKEN = process.env.REPLICATE_API_TOKEN;
 
-// 画像生成の API エンドポイント
+// ✅ `/generate` のルートを正しく設定
 app.post("/generate", async (req, res) => {
     const { prompt } = req.body;
 
@@ -18,7 +18,6 @@ app.post("/generate", async (req, res) => {
     }
 
     try {
-        // Replicate API にリクエストを送信
         const response = await axios.post(
             "https://api.replicate.com/v1/predictions",
             {
@@ -34,8 +33,6 @@ app.post("/generate", async (req, res) => {
         );
 
         const prediction = response.data;
-
-        // 画像生成の完了を待つ
         let imageUrl = null;
         while (!imageUrl) {
             await new Promise(resolve => setTimeout(resolve, 3000));
@@ -59,6 +56,11 @@ app.post("/generate", async (req, res) => {
         console.error("エラー:", error);
         res.status(500).json({ error: "API リクエストに失敗しました。" });
     }
+});
+
+// ✅ サーバーが正しく起動しているか確認用
+app.get("/", (req, res) => {
+    res.send("Server is running!");
 });
 
 const PORT = process.env.PORT || 3000;
